@@ -5,6 +5,8 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 
 public class MarkdownParse {
+    static String[] imageExtensions = {".png", ".jpeg", ".gif", ".csv", ".jpg", ".svg", ".pdf"};
+
     public static ArrayList<String> getLinks(String markdown) {
         ArrayList<String> toReturn = new ArrayList<>();
         // find the next [, then find the ], then find the (, then take up to
@@ -16,11 +18,24 @@ public class MarkdownParse {
             int nextCloseBracket = markdown.indexOf("]", nextOpenBracket);
             int openParen = markdown.indexOf("(", nextCloseBracket);
             int closeParen = markdown.indexOf(")", openParen);
-            toReturn.add(markdown.substring(openParen + 1, closeParen));
+            if (nextCloseBracket > openParen) break;
+            if (!checkExtension(markdown.substring(openParen +1, closeParen)))
+            {
+                toReturn.add(markdown.substring(openParen + 1, closeParen));
+            }
             currentIndex = closeParen + 1;
             System.out.println(currentIndex);
         }
         return toReturn;
+    }
+
+    public static boolean checkExtension(String substring) {
+        for (int i = 0; i < imageExtensions.length; ++i) {
+            if (substring.contains(imageExtensions[i])) {
+                return true;
+            }
+        }
+    return false;
     }
     public static void main(String[] args) throws IOException {
 		Path fileName = Path.of(args[0]);
