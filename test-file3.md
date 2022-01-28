@@ -1,2 +1,2 @@
 [this is not a link](picture.png)
-[another link]()
+[another link](www.edwin.com)
